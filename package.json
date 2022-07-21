@@ -30,6 +30,7 @@
     "http-status-codes": "^2.2.0",
     "joi": "^17.6.0",
     "mysql2": "^2.3.3",
+    "node-fetch": "^2.6.7",
     "sequelize": "^6.21.3",
     "sequelize-cli": "^6.4.1"
   },
