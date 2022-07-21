@@ -62,12 +62,12 @@ const buyAsset = async ({ codCliente, codAtivo, qtdeAtivo }) => {
       );
 
       await Ativo.increment(
-        { qtdeAtivo: -Number(`${qtdeAtivo}`) },
+        { qtdeAtivo: qtdeAtivo * -1 },
         { where: { codAtivo }, transaction: t },
       );
 
       await Cliente.increment(
-        { saldo: -Number(`${asset.totalPrice}`) },
+        { saldo: asset.totalPrice * -1 },
         { where: { codCliente }, transaction: t },
       );
 
@@ -83,4 +83,57 @@ const buyAsset = async ({ codCliente, codAtivo, qtdeAtivo }) => {
   }
 };
 
-module.exports = { buyAsset };
+const validateAmountOfAsset = async (codCliente, codAtivo, qtdeAtivo) => {
+  const purchasedAssets = await Investimento.sum('qtdeAtivo', {
+    where: { codCliente, codAtivo, tipo: { [Op.like]: 'COMPRA' } },
+  });
+
+  const soldAssets = await Investimento.sum('qtdeAtivo', {
+    where: { codCliente, codAtivo, tipo: { [Op.like]: 'VENDA' } },
+  });
+
+  const assetsAmount = purchasedAssets - soldAssets;
+
+  if (qtdeAtivo > assetsAmount) {
+    throw {
+      status: StatusCodes.UNAUTHORIZED,
+      message: 'Não foi possível realizar a operação',
+    };
+  }
+};
+
+const sellAsset = async ({ codCliente, codAtivo, qtdeAtivo }) => {
+  await validateAmountOfAsset(codCliente, codAtivo, qtdeAtivo);
+
+  const asset = await getAssetPrice(codAtivo, qtdeAtivo);
+
+  try {
+    const response = await sequelize.transaction(async (t) => {
+      const investimento = await Investimento.create(
+        { codCliente, codAtivo, qtdeAtivo, valor: asset.price, tipo: 'VENDA' },
+        { transaction: t },
+      );
+
+      await Ativo.increment(
+        { qtdeAtivo: qtdeAtivo },
+        { where: { codAtivo }, transaction: t },
+      );
+
+      await Cliente.increment(
+        { saldo: asset.totalPrice },
+        { where: { codCliente }, transaction: t },
+      );
+
+      return investimento;
+    });
+
+    return response;
+  } catch (error) {
+    throw {
+      status: StatusCodes.INTERNAL_SERVER_ERROR,
+      message: 'Não foi possível realizar a operação',
+    };
+  }
+};
+
+module.exports = { buyAsset, sellAsset };
