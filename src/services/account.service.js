@@ -1,11 +1,14 @@
 const { Cliente } = require('../database/models');
 const { StatusCodes } = require('http-status-codes');
 
-const findClient = async (codCliente) =>
-  await Cliente.findOne({
-    where: { codCliente },
-    attributes: { exclude: ['senha'] },
-  });
+const Sequelize = require('sequelize');
+
+const { Op } = Sequelize;
+
+const findClient = async (codCliente) => await Cliente.findOne({
+  where: { codCliente },
+  attributes: { exclude: ['senha'] },
+});
 
 const createDeposit = async ({ codCliente, valor }) => {
   const client = await findClient(codCliente);
@@ -19,7 +22,27 @@ const createDeposit = async ({ codCliente, valor }) => {
 
   await client.increment({ saldo: valor });
 
-  return client;
+  const clientUpdated = await findClient(codCliente);
+  return clientUpdated;
 };
 
-module.exports = { createDeposit };
+const createWithdraw = async ({ codCliente, valor }) => {
+  const client = await Cliente.findOne({
+    where: { codCliente, saldo: { [Op.gt]: valor } },
+    attributes: { exclude: ['senha'] },
+  });
+
+  if (!client) {
+    throw {
+      status: StatusCodes.UNAUTHORIZED,
+      message: 'Não foi possível realizar a operação',
+    };
+  }
+
+  await client.increment({ saldo: valor * -1 });
+
+  const clientUpdated = await findClient(codCliente);
+  return clientUpdated;
+}
+
+module.exports = { createDeposit, createWithdraw };

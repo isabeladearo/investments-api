@@ -7,4 +7,10 @@ const createDeposit = async (req, res) => {
   return res.status(StatusCodes.CREATED).json(deposit);
 }
 
-module.exports = { createDeposit };
+const createWithdraw = async (req, res) => {
+  const withdraw = await accountService.createWithdraw(req.body);
+
+  return res.status(StatusCodes.CREATED).json(withdraw);
+}
+
+module.exports = { createDeposit, createWithdraw };
