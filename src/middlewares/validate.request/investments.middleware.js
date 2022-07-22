@@ -33,5 +33,7 @@ module.exports = async (req, res, next) => {
 
   if (!error) return next();
 
-  return res.status(StatusCodes.BAD_REQUEST).json({ message: handleError(error) });
+  return res
+    .status(StatusCodes.BAD_REQUEST)
+    .json({ message: handleError(error) });
 };

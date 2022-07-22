@@ -26,29 +26,35 @@ const getAmountOfAsset = async (codCliente, codAtivo) => {
   });
 
   return purchasedAssets - soldAssets;
-}
+};
 
 const getPriceAssetAverage = async (codCliente, codAtivo) => {
   const sumAssetPrice = await Investimento.sum('valor', {
-    where: { codCliente, codAtivo, tipo: { [Op.like]: 'COMPRA' } } });
+    where: { codCliente, codAtivo, tipo: { [Op.like]: 'COMPRA' } },
+  });
 
   const { count } = await Investimento.findAndCountAll({
-    where: { codCliente, codAtivo, tipo: { [Op.like]: 'COMPRA' } } });
-  
-  return sumAssetPrice/count;
-}
+    where: { codCliente, codAtivo, tipo: { [Op.like]: 'COMPRA' } },
+  });
+
+  return sumAssetPrice / count;
+};
 
 const getAssetsByCodClient = async (codCliente) => {
   const codAssets = await getAssetsByClient(codCliente);
 
-  const response = await Promise.all(codAssets.map(async (codAsset) => ({
-    codCliente,
-    codAtivo: codAsset,
-    qtdeAtivo: await getAmountOfAsset(codCliente, codAsset),
-    valor: await getPriceAssetAverage(codCliente, codAsset),
-  })));
+  const response = await Promise.all(
+    codAssets.map(async (codAsset) => ({
+      codCliente: Number(codCliente),
+      codAtivo: codAsset,
+      qtdeAtivo: await getAmountOfAsset(codCliente, codAsset),
+      valor: await getPriceAssetAverage(codCliente, codAsset),
+    })),
+  );
 
-  const assetsByClient = response.filter((investment) => investment.qtdeAtivo !== 0);
+  const assetsByClient = response.filter(
+    (investment) => investment.qtdeAtivo !== 0,
+  );
   return assetsByClient;
 };
 
@@ -58,7 +64,7 @@ const getAssetsByCodAsset = async (codAtivo) => {
   const [asset] = await fetchAssetByTicker(codAtivo);
 
   return { codAtivo, qtdeAtivo: dataValues.qtdeAtivo, valor: asset.cotacao };
-}
+};
 
 const getAssets = async (codId) => {
   const regexNumbersOnly = /^\d+$/g;

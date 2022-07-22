@@ -1,6 +1,7 @@
 module.exports = {
   up: async (queryInterface, _Sequelize) => {
-    await queryInterface.bulkInsert('Investimentos',
+    await queryInterface.bulkInsert(
+      'Investimentos',
       [
         {
           codInvestimento: 1,
@@ -38,8 +39,9 @@ module.exports = {
           data: new Date('2022-07-18T20:18:23.000Z'),
           tipo: 'VENDA',
         },
-
-      ], { timestamps: false });
+      ],
+      { timestamps: false },
+    );
   },
 
   down: async (queryInterface, _Sequelize) => {

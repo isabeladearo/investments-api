@@ -5,13 +5,19 @@ const Sequelize = require('sequelize');
 
 const { Op } = Sequelize;
 
-const findClient = async (codCliente) => await Cliente.findOne({
-  where: { codCliente },
-  attributes: { exclude: ['senha'] },
-});
+const findClient = async (codCliente) =>
+  await Cliente.findOne({
+    where: { codCliente },
+    attributes: { exclude: ['senha'] },
+  });
 
 const createDeposit = async ({ codCliente, valor }) => {
-  const client = await findClient(codCliente);
+  const client = await Cliente.findOne({
+    where: { codCliente },
+    attributes: { exclude: ['senha'] },
+  });
+
+  console.log(client);
 
   if (!client) {
     throw {
@@ -43,7 +49,7 @@ const createWithdraw = async ({ codCliente, valor }) => {
 
   const clientUpdated = await findClient(codCliente);
   return clientUpdated;
-}
+};
 
 const getByCodClient = async (codCliente) => {
   const client = await await Cliente.findOne({
@@ -58,7 +64,10 @@ const getByCodClient = async (codCliente) => {
     };
   }
 
-  return { codCliente, saldo: client.dataValues.saldo };
-}
+  return {
+    codCliente: Number(codCliente),
+    saldo: Number(client.dataValues.saldo),
+  };
+};
 
 module.exports = { createDeposit, createWithdraw, getByCodClient };

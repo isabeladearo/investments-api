@@ -5,6 +5,6 @@ const getAssets = async (req, res) => {
   const response = await assetsService.getAssets(req.params.id);
 
   return res.status(StatusCodes.OK).json(response);
-}
+};
 
 module.exports = { getAssets };
