@@ -3,6 +3,9 @@ const {
   investmentsMiddleware,
   assetsCodClientMiddleware,
   accountMiddleware,
+  loginMiddleware,
+  registerMiddleware,
+  authMiddleware,
 } = require('./validate.request');
 
 module.exports = {
@@ -10,4 +13,7 @@ module.exports = {
   investmentsMiddleware,
   assetsCodClientMiddleware,
   accountMiddleware,
+  loginMiddleware,
+  registerMiddleware,
+  authMiddleware,
 };

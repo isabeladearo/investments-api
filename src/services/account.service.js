@@ -17,8 +17,6 @@ const createDeposit = async ({ codCliente, valor }) => {
     attributes: { exclude: ['senha'] },
   });
 
-  console.log(client);
-
   if (!client) {
     throw {
       status: StatusCodes.UNAUTHORIZED,

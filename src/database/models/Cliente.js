@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
       nome: DataTypes.STRING,
       email: { type: DataTypes.STRING, unique: true },
       senha: DataTypes.STRING,
-      saldo: DataTypes.DECIMAL(11, 2),
+      saldo: { type: DataTypes.DECIMAL(11, 2), defaultValue: 0 }
     },
     {
       timestamps: false,
