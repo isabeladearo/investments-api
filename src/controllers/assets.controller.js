@@ -1,10 +1,16 @@
-const { assetsService } = require('../services');
 const { StatusCodes } = require('http-status-codes');
+const { assetsService } = require('../services');
 
-const getAssets = async (req, res) => {
-  const response = await assetsService.getAssets(req.params.id);
+const getAssetByCodAtivo = async (req, res) => {
+  const asset = await assetsService.getAssetByCodAtivo(req.params.id);
 
-  return res.status(StatusCodes.OK).json(response);
+  return res.status(StatusCodes.OK).json(asset);
 };
 
-module.exports = { getAssets };
+const getAssetsByCodCliente = async (req, res) => {
+  const assets = await assetsService.getAssetsByCodCliente(req.params.id);
+
+  return res.status(StatusCodes.OK).json(assets);
+};
+
+module.exports = { getAssetByCodAtivo, getAssetsByCodCliente };

@@ -1,5 +1,5 @@
-const { accountService } = require('../services');
 const { StatusCodes } = require('http-status-codes');
+const { accountService } = require('../services');
 
 const createDeposit = async (req, res) => {
   const deposit = await accountService.createDeposit(req.body);

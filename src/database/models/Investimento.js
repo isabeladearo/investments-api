@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         foreignKey: true,
       },
-      codAtivo: { type: DataTypes.STRING, primaryKey: true, foreignKey: true },
+      codAtivo: { type: DataTypes.INTEGER, primaryKey: true, foreignKey: true },
       qtdeAtivo: DataTypes.INTEGER,
       valor: DataTypes.DECIMAL(11, 2),
       data: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },

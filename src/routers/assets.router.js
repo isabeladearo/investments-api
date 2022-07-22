@@ -7,6 +7,8 @@ const router = express.Router();
 
 router.use(authMiddleware);
 
-router.get('/:id', assetsController.getAssets);
+router.get('/:id', assetsController.getAssetByCodAtivo);
+
+router.get('/cliente/:id', assetsController.getAssetsByCodCliente);
 
 module.exports = router;

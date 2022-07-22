@@ -3,7 +3,8 @@ const { StatusCodes } = require('http-status-codes');
 
 const accountSchema = Joi.object({
   codCliente: Joi.number().strict().integer().required(),
-  valor: Joi.number().strict().integer().min(1).required(),
+  valor: Joi.number().strict().integer().min(1)
+    .required(),
 });
 
 const handleError = (error) => {

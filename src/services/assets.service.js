@@ -1,7 +1,6 @@
-const { Investimento, Ativo } = require('../database/models');
-const { fetchAssetByTicker } = require('../helpers/fetchAssetsAPI');
-
 const Sequelize = require('sequelize');
+const { Investimento, Ativo } = require('../database/models');
+const { fetchAssetByCodAtivo } = require('../helpers/fetchAssetsAPI');
 
 const { Op } = Sequelize;
 
@@ -40,7 +39,7 @@ const getPriceAssetAverage = async (codCliente, codAtivo) => {
   return sumAssetPrice / count;
 };
 
-const getAssetsByCodClient = async (codCliente) => {
+const getAssetsByCodCliente = async (codCliente) => {
   const codAssets = await getAssetsByClient(codCliente);
 
   const response = await Promise.all(
@@ -58,25 +57,12 @@ const getAssetsByCodClient = async (codCliente) => {
   return assetsByClient;
 };
 
-const getAssetsByCodAsset = async (codAtivo) => {
+const getAssetByCodAtivo = async (codAtivo) => {
   const { dataValues } = await Ativo.findOne({ where: { codAtivo } });
 
-  const [asset] = await fetchAssetByTicker(codAtivo);
+  const [asset] = await fetchAssetByCodAtivo(codAtivo);
 
-  return { codAtivo, qtdeAtivo: dataValues.qtdeAtivo, valor: asset.cotacao };
+  return { codAtivo: Number(codAtivo), qtdeAtivo: dataValues.qtdeAtivo, valor: asset.cotacao };
 };
 
-const getAssets = async (codId) => {
-  const regexNumbersOnly = /^\d+$/g;
-  const validateCodId = regexNumbersOnly.test(codId);
-
-  if (validateCodId) {
-    const assetsByClient = await getAssetsByCodClient(codId);
-    return assetsByClient;
-  }
-
-  const asset = await getAssetsByCodAsset(codId);
-  return asset;
-};
-
-module.exports = { getAssets };
+module.exports = { getAssetByCodAtivo, getAssetsByCodCliente };

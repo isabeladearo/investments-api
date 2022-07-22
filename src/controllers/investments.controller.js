@@ -1,5 +1,5 @@
-const { investmentsService } = require('../services');
 const { StatusCodes } = require('http-status-codes');
+const { investmentsService } = require('../services');
 
 const buyAsset = async (req, res) => {
   const investment = await investmentsService.buyAsset(req.body);

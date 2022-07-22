@@ -6,7 +6,7 @@ module.exports = {
         {
           codInvestimento: 1,
           codCliente: 1,
-          codAtivo: 'MGLU3',
+          codAtivo: 1,
           qtdeAtivo: 1000,
           valor: 2.77,
           data: new Date('2022-07-18T14:31:16.000Z'),
@@ -15,7 +15,7 @@ module.exports = {
         {
           codInvestimento: 2,
           codCliente: 2,
-          codAtivo: 'B3SA3',
+          codAtivo: 2,
           qtdeAtivo: 2000,
           valor: 2.31,
           data: new Date('2022-07-18T16:15:59.000Z'),
@@ -24,7 +24,7 @@ module.exports = {
         {
           codInvestimento: 3,
           codCliente: 1,
-          codAtivo: 'MGLU3',
+          codAtivo: 1,
           qtdeAtivo: 500,
           valor: 2.77,
           data: new Date('2022-07-18T14:35:56.000Z'),
@@ -33,7 +33,7 @@ module.exports = {
         {
           codInvestimento: 4,
           codCliente: 2,
-          codAtivo: 'B3SA3',
+          codAtivo: 2,
           qtdeAtivo: 1000,
           valor: 2.31,
           data: new Date('2022-07-18T20:18:23.000Z'),

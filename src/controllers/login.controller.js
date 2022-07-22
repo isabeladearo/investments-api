@@ -1,5 +1,5 @@
-const { loginService } = require('../services');
 const { StatusCodes } = require('http-status-codes');
+const { loginService } = require('../services');
 
 const authenticateLogin = async (req, res) => {
   const token = await loginService.authenticateLogin(req.body);

@@ -1,5 +1,5 @@
-const { Cliente } = require('../database/models');
 const { StatusCodes } = require('http-status-codes');
+const { Cliente } = require('../database/models');
 const { generateJWTToken } = require('../helpers/JWTToken');
 
 const registerNewClient = async ({ nome, email, senha }) => {
@@ -10,10 +10,10 @@ const registerNewClient = async ({ nome, email, senha }) => {
   });
 
   if (!created) {
-    throw {
+    throw new Error({
       status: StatusCodes.CONFLICT,
       message: 'Cliente já cadastrado',
-    };
+    });
   }
 
   const payload = {

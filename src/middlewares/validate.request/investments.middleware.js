@@ -3,8 +3,9 @@ const { StatusCodes } = require('http-status-codes');
 
 const investmentsSchema = Joi.object({
   codCliente: Joi.number().strict().integer().required(),
-  codAtivo: Joi.string().alphanum().length(5).required(),
-  qtdeAtivo: Joi.number().strict().integer().min(1).required(),
+  codAtivo: Joi.number().strict().integer().required(),
+  qtdeAtivo: Joi.number().strict().integer().min(1)
+    .required(),
 });
 
 const handleError = (error) => {
@@ -15,10 +16,6 @@ const handleError = (error) => {
     'number.base',
     'number.integer',
     'number.min',
-    'string.base',
-    'string.empty',
-    'string.alphanum',
-    'string.length',
   ];
 
   if (MISSING_TYPES.includes(type)) {

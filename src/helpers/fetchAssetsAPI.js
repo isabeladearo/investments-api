@@ -7,10 +7,10 @@ const fetchAPI = async (url) => {
     const data = await response.json();
     return data;
   } catch (error) {
-    throw {
+    throw new Error({
       status: StatusCodes.INTERNAL_SERVER_ERROR,
       message: 'Não foi possível solicitar cotacao dos ativos',
-    };
+    });
   }
 };
 
@@ -20,10 +20,10 @@ const fetchAssets = async () => {
   return data;
 };
 
-const fetchAssetByTicker = async (ticker) => {
-  const url = `https://assets-api-backend.herokuapp.com/assets/search?ticker=${ticker}`;
+const fetchAssetByCodAtivo = async (codAtivo) => {
+  const url = `https://assets-api-backend.herokuapp.com/assets/${codAtivo}`;
   const data = await fetchAPI(url);
   return data;
 };
 
-module.exports = { fetchAssets, fetchAssetByTicker };
+module.exports = { fetchAssets, fetchAssetByCodAtivo };
