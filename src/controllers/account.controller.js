@@ -13,4 +13,10 @@ const createWithdraw = async (req, res) => {
   return res.status(StatusCodes.CREATED).json(withdraw);
 }
 
-module.exports = { createDeposit, createWithdraw };
+const getByCodClient = async (req, res) => {
+  const client = await accountService.getByCodClient(req.params.id);
+
+  return res.status(StatusCodes.OK).json(client);
+}
+
+module.exports = { createDeposit, createWithdraw, getByCodClient };

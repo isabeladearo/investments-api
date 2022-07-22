@@ -5,6 +5,7 @@ const { investmentsController } = require('../controllers');
 
 const router = express.Router();
 
-router.post('/', investmentsMiddleware, investmentsController.sellAsset);
+router.post('/comprar', investmentsMiddleware, investmentsController.buyAsset);
+router.post('/vender', investmentsMiddleware, investmentsController.sellAsset);
 
 module.exports = router;

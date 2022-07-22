@@ -45,4 +45,20 @@ const createWithdraw = async ({ codCliente, valor }) => {
   return clientUpdated;
 }
 
-module.exports = { createDeposit, createWithdraw };
+const getByCodClient = async (codCliente) => {
+  const client = await await Cliente.findOne({
+    attributes: ['saldo'],
+    where: { codCliente },
+  });
+
+  if (!client) {
+    throw {
+      status: StatusCodes.UNAUTHORIZED,
+      message: 'Cliente não encontrado',
+    };
+  }
+
+  return { codCliente, saldo: client.dataValues.saldo };
+}
+
+module.exports = { createDeposit, createWithdraw, getByCodClient };
