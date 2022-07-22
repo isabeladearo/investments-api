@@ -9,8 +9,20 @@ const fetchAssets = async () => {
     const data = await response.json();
     return data;
   } catch(error) {
+    throw { status: StatusCodes.INTERNAL_SERVER_ERROR, message: 'Não foi possível solicitar cotacao dos ativos' };
+  }
+}
+
+const fetchAssetByTicker = async (ticker) => {
+  const url = `https://assets-api-backend.herokuapp.com/assets/search?ticker=${ticker}`;
+
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+    return data;
+  } catch(error) {
     throw { status: StatusCodes.INTERNAL_SERVER_ERROR, message: 'Não foi possível solicitar cotacao do ativo' };
   }
 }
 
-module.exports = fetchAssets;
+module.exports = { fetchAssets, fetchAssetByTicker };

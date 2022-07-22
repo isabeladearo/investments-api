@@ -1,10 +1,10 @@
 const { assetsService } = require('../services');
 const { StatusCodes } = require('http-status-codes');
 
-const getInvestments = async (req, res) => {
-  const investments = await assetsService.getInvestments(req.params.id);
+const getAssets = async (req, res) => {
+  const response = await assetsService.getAssets(req.params.id);
 
-  return res.status(StatusCodes.OK).json(investments);
+  return res.status(StatusCodes.OK).json(response);
 }
 
-module.exports = { getInvestments };
+module.exports = { getAssets };

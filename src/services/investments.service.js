@@ -1,6 +1,6 @@
 const { Ativo, Cliente, Investimento } = require('../database/models');
 const { StatusCodes } = require('http-status-codes');
-const fetchAssets = require('../helpers/fetchAssetsAPI');
+const { fetchAssets } = require('../helpers/fetchAssetsAPI');
 
 const Sequelize = require('sequelize');
 

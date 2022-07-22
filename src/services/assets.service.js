@@ -1,4 +1,5 @@
-const { Investimento } = require('../database/models');
+const { Investimento, Ativo } = require('../database/models');
+const { fetchAssetByTicker } = require('../helpers/fetchAssetsAPI');
 
 const Sequelize = require('sequelize');
 
@@ -51,7 +52,15 @@ const getAssetsByCodClient = async (codCliente) => {
   return assetsByClient;
 };
 
-const getInvestments = async (codId) => {
+const getAssetsByCodAsset = async (codAtivo) => {
+  const { dataValues } = await Ativo.findOne({ where: { codAtivo } });
+
+  const [asset] = await fetchAssetByTicker(codAtivo);
+
+  return { codAtivo, qtdeAtivo: dataValues.qtdeAtivo, valor: asset.cotacao };
+}
+
+const getAssets = async (codId) => {
   const regexNumbersOnly = /^\d+$/g;
   const validateCodId = regexNumbersOnly.test(codId);
 
@@ -59,6 +68,9 @@ const getInvestments = async (codId) => {
     const assetsByClient = await getAssetsByCodClient(codId);
     return assetsByClient;
   }
+
+  const asset = await getAssetsByCodAsset(codId);
+  return asset;
 };
 
-module.exports = { getInvestments };
+module.exports = { getAssets };

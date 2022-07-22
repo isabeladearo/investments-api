@@ -4,6 +4,6 @@ const { assetsController } = require('../controllers');
 
 const router = express.Router();
 
-router.get('/:id', assetsController.getInvestments);
+router.get('/:id', assetsController.getAssets);
 
 module.exports = router;
