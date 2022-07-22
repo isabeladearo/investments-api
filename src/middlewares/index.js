@@ -1,4 +1,11 @@
 const httpErrorMiddleware = require('./http.error.middleware');
-const investmentsMiddleware = require('./validate.request/investments.middleware');
+const {
+  investmentsMiddleware,
+  assetsCodClientMiddleware,
+} = require('./validate.request');
 
-module.exports = { httpErrorMiddleware, investmentsMiddleware };
+module.exports = {
+  httpErrorMiddleware,
+  investmentsMiddleware,
+  assetsCodClientMiddleware,
+};
