@@ -37,6 +37,7 @@ const validateClientBalance = async (codCliente, codAtivo, qtdeAtivo) => {
 
   const client = await Cliente.findOne({
     where: { codCliente, saldo: { [Op.gt]: asset.totalPrice } },
+    attributes: { exclude: ['senha'] },
   });
 
   if (!client) {
