@@ -354,8 +354,8 @@
             }
           ],
           "responses": {
-            "404": {
-              "description": "Cliente não encontrado"
+            "401": {
+              "description": "Não foi possível realizar a operação"
             },
             "200": {
               "description": "OK",
@@ -385,8 +385,8 @@
             }
           ],
           "responses": {
-            "404": {
-              "description": "Cliente não encontrado"
+            "401": {
+              "description": "Não foi possível realizar a operação"
             },
             "200": {
               "description": "OK",
