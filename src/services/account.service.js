@@ -11,17 +11,9 @@ const findClient = (codCliente) => Cliente.findOne({
 });
 
 const createDeposit = async ({ codCliente, valor }) => {
-  const client = await Cliente.findOne({
-    where: { codCliente },
-    attributes: { exclude: ['senha'] },
-  });
+  const client = await findClient(codCliente);
 
-  if (!client) {
-    throw new Error({
-      status: StatusCodes.UNAUTHORIZED,
-      message: 'Cliente não encontrado',
-    });
-  }
+  if (!client) return false;
 
   await client.increment({ saldo: valor });
 
@@ -35,12 +27,7 @@ const createWithdraw = async ({ codCliente, valor }) => {
     attributes: { exclude: ['senha'] },
   });
 
-  if (!client) {
-    throw new Error({
-      status: StatusCodes.UNAUTHORIZED,
-      message: 'Não foi possível realizar a operação',
-    });
-  }
+  if (!client) return false;
 
   await client.increment({ saldo: valor * -1 });
 
@@ -49,17 +36,16 @@ const createWithdraw = async ({ codCliente, valor }) => {
 };
 
 const getByCodClient = async (codCliente) => {
+  const validate = /^\d+$/g.test(codCliente);
+
+  if (!validate) return false;
+
   const client = await await Cliente.findOne({
     attributes: ['saldo'],
     where: { codCliente },
   });
 
-  if (!client) {
-    throw new Error({
-      status: StatusCodes.UNAUTHORIZED,
-      message: 'Cliente não encontrado',
-    });
-  }
+  if (!client) return false;
 
   return {
     codCliente: Number(codCliente),

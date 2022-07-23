@@ -15,10 +15,7 @@ const validateAssetAvailability = async (codAtivo, qtdeAtivo) => {
   });
 
   if (!assetAvailability) {
-    throw new Error({
-      status: StatusCodes.UNAUTHORIZED,
-      message: 'Ativo não disponível',
-    });
+    return { error: { statusCode: StatusCodes.UNAUTHORIZED, message: 'Ativo não disponível' } };
   }
 
   return true;
@@ -43,10 +40,7 @@ const validateClientBalance = async (codCliente, codAtivo, qtdeAtivo) => {
   });
 
   if (!client) {
-    throw new Error({
-      status: StatusCodes.UNAUTHORIZED,
-      message: 'Não foi possível realizar a operação',
-    });
+    return { error: { statusCode: StatusCodes.UNAUTHORIZED, message: 'Não foi possível realizar a operação' } };
   }
 
   return asset;
@@ -85,10 +79,7 @@ const buyAsset = async ({ codCliente, codAtivo, qtdeAtivo }) => {
 
     return response;
   } catch (error) {
-    throw new Error({
-      status: StatusCodes.INTERNAL_SERVER_ERROR,
-      message: 'Não foi possível realizar a operação',
-    });
+    return { error: { statusCode: StatusCodes.INTERNAL_SERVER_ERROR, message: 'Não foi possível realizar a operação' } };
   }
 };
 
@@ -104,10 +95,7 @@ const validateAmountOfAsset = async (codCliente, codAtivo, qtdeAtivo) => {
   const assetsAmount = purchasedAssets - soldAssets;
 
   if (qtdeAtivo > assetsAmount) {
-    throw new Error({
-      status: StatusCodes.UNAUTHORIZED,
-      message: 'Não foi possível realizar a operação',
-    });
+    return { error: { statusCode: StatusCodes.UNAUTHORIZED, message: 'Não foi possível realizar a operação' } };
   }
 };
 
@@ -144,10 +132,7 @@ const sellAsset = async ({ codCliente, codAtivo, qtdeAtivo }) => {
 
     return response;
   } catch (error) {
-    throw new Error({
-      status: StatusCodes.INTERNAL_SERVER_ERROR,
-      message: 'Não foi possível realizar a operação',
-    });
+    return { error: { statusCode: StatusCodes.INTERNAL_SERVER_ERROR, message: 'Não foi possível realizar a operação' } };
   }
 };
 

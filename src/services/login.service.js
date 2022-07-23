@@ -1,26 +1,13 @@
-const { StatusCodes } = require('http-status-codes');
 const { Cliente } = require('../database/models');
 const { generateJWTToken } = require('../helpers/JWTToken');
 
 const authenticateLogin = async ({ email, senha }) => {
-  if (!email || !senha) {
-    throw new Error({
-      status: StatusCodes.UNAUTHORIZED,
-      message: 'Campos faltantes',
-    });
-  }
-
   const client = await Cliente.findOne({
     where: { email, senha },
     attributes: { exclude: ['senha', 'saldo'] },
   });
 
-  if (!client) {
-    throw new Error({
-      status: StatusCodes.UNAUTHORIZED,
-      message: 'Cliente ou senha inválida',
-    });
-  }
+  if (!client) return false;
 
   const payload = {
     codCliente: client.dataValues.codCliente,

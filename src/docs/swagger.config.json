@@ -1,0 +1,523 @@
+{
+  "definition": {
+    "openapi": "3.0.0",
+    "info": {
+      "title": "Investimentos-API",
+      "description": "API desenvolvida para o desafio técnico do processo seletivo da XP",
+      "contact": {
+        "name": "Isabela de Aro",
+        "email": "euisabeladearo@gmail.com"
+      },
+      "version": "1.0.0"
+    },
+    "servers": [
+      {
+        "url": "http://localhost:3000/",
+        "description": ""
+      }
+    ],
+    "components": {
+      "schemas": {
+        "ReqCadastro": {
+          "type": "object",
+          "properties": {
+            "nome": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string"
+            },
+            "senha": {
+              "type": "string"
+            }
+          }
+        },
+        "ReqLogin": {
+          "type": "object",
+          "properties": {
+            "email": {
+              "type": "string"
+            },
+            "senha": {
+              "type": "string"
+            }
+          }
+        },
+        "ResToken": {
+          "type": "object",
+          "properties": {
+            "token": {
+              "type": "string"
+            }
+          }
+        },
+        "ReqComprarVenderAtivo": {
+          "type": "object",
+          "properties": {
+            "codCliente": {
+              "type": "number"
+            },
+            "codAtivo": {
+              "type": "number"
+            },
+            "qtdeAtivo": {
+              "type": "number"
+            }
+          }
+        },
+        "ResComprarVenderAtivo": {
+          "type": "object",
+          "properties": {
+            "data": {
+              "type": "string"
+            },
+            "codInvestimento": {
+              "type": "number"
+            },
+            "codCliente": {
+              "type": "number"
+            },
+            "codAtivo": {
+              "type": "number"
+            },
+            "qtdeAtivo": {
+              "type": "number"
+            },
+            "valor": {
+              "type": "string"
+            },
+            "tipo": {
+              "type": "string"
+            }
+          }
+        },
+        "ResAtivoById": {
+          "type": "object",
+          "properties": {
+            "codAtivo": {
+              "type": "number"
+            },
+            "qtdeAtivo": {
+              "type": "number"
+            },
+            "valor": {
+              "type": "number"
+            }
+          }
+        },
+        "ResAtivosClienteId": {
+          "type": "object",
+          "properties": {
+            "codCliente": {
+              "type": "number"
+            },
+            "codAtivo": {
+              "type": "number"
+            },
+            "qtdeAtivo": {
+              "type": "number"
+            },
+            "valor": {
+              "type": "number"
+            }
+          }
+        },
+        "ReqDepositoSaqueConta": {
+          "type": "object",
+          "properties": {
+            "codCliente": {
+              "type": "number"
+            },
+            "valor": {
+              "type": "number"
+            }
+          }
+        },
+        "ResDepositoSaqueConta": {
+          "type": "object",
+          "properties": {
+            "codCliente": {
+              "type": "number"
+            },
+            "nome": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string"
+            },
+            "saldo": {
+              "type": "string"
+            }
+          }
+        },
+        "ResContaCliente": {
+          "type": "object",
+          "properties": {
+            "codCliente": {
+              "type": "number"
+            },
+            "saldo": {
+              "type": "number"
+            }
+          }
+        }
+      }
+    },
+    "paths": {
+      "/cadastro": {
+        "post": {
+          "summary": "Realiza cadastro de novo cliente",
+          "description": "Rota responsável por realizar cadastro de novo cliente",
+          "tags": ["Autenticação"],
+          "requestBody": {
+            "require": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReqCadastro"
+                },
+                "examples": {
+                  "ReqCadastro": {
+                    "value": {
+                      "nome": "Constantino Ribeiro",
+                      "email": "constantinoribeiro@gmail.com",
+                      "senha": "123456"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "401": {
+              "description": "Campos faltantes"
+            },
+            "409": {
+              "description": "Cliente já cadastrado"
+            },
+            "201": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "$ref": "#/components/schemas/ResToken"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/login": {
+        "post": {
+          "summary": "Realiza login do cliente",
+          "description": "Rota responsável por realizar login do cliente",
+          "tags": ["Autenticação"],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReqLogin"
+                },
+                "examples": {
+                  "ReqLogin": {
+                    "value": {
+                      "email": "constantinoribeiro@gmail.com",
+                      "senha": "123456"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "401": {
+              "description": "Campos faltantes ou inválidos"
+            },
+            "201": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "$ref": "#/components/schemas/ResToken"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/investimentos/comprar": {
+        "post": {
+          "summary": "Realiza a compra de ativo",
+          "description": "Rota responsável por realizar a compra de ativo",
+          "tags": ["Investimentos"],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReqComprarVenderAtivo"
+                },
+                "examples": {
+                  "ReqComprarAtivo": {
+                    "value": {
+                      "codCliente": 1,
+                      "codAtivo": 1,
+                      "qtdeAtivo": 10
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "401": {
+              "description": "Campos faltantes ou não foi possível realizar a operação "
+            },
+            "500": {
+              "description": "Não foi possível realizar a operação"
+            },
+            "201": {
+              "description": "CREATED",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "$ref": "#/components/schemas/ResComprarVenderAtivo"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/investimentos/vender": {
+        "post": {
+          "summary": "Realiza a venda de ativo",
+          "description": "Rota responsável por realizar a venda de ativo",
+          "tags": ["Investimentos"],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReqComprarVenderAtivo"
+                },
+                "examples": {
+                  "ReqVenderAtivo": {
+                    "value": {
+                      "codCliente": 1,
+                      "codAtivo": 1,
+                      "qtdeAtivo": 4
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "401": {
+              "description": "Campos faltantes ou não foi possível realizar a operação"
+            },
+            "500": {
+              "description": "Não foi possível realizar a operação"
+            },
+            "201": {
+              "description": "CREATED",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "$ref": "#/components/schemas/ResComprarVenderAtivo"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/ativos/{id}": {
+        "get": {
+          "summary": "Busca o ativo pelo id",
+          "description": "Rota responsável por buscar o ativo pelo id",
+          "tags": ["Ativos"],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "responses": {
+            "404": {
+              "description": "Cliente não encontrado"
+            },
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "$ref": "#/components/schemas/ResAtivoById"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/ativos/cliente/{id}": {
+        "get": {
+          "summary": "Busca os ativos do cliente",
+          "description": "Rota responsável por buscar os ativos do cliente",
+          "tags": ["Ativos"],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "responses": {
+            "404": {
+              "description": "Cliente não encontrado"
+            },
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/ResAtivosClienteId"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/conta/deposito": {
+        "post": {
+          "summary": "Realiza depósito na conta do cliente",
+          "description": "Rota responsável por realizar depósito na conta do cliente",
+          "tags": ["Conta"],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReqDepositoSaqueConta"
+                },
+                "examples": {
+                  "ReqDeposito": {
+                    "value": {
+                      "codCliente": 1,
+                      "valor": 1000
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "401": {
+              "description": "Campos faltantes ou cliente não encontrado"
+            },
+            "201": {
+              "description": "CREATED",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "$ref": "#/components/schemas/ResDepositoSaqueConta"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/conta/saque": {
+        "post": {
+          "summary": "Realiza saque na conta do cliente",
+          "description": "Rota responsável por realizar saque na conta do cliente",
+          "tags": ["Conta"],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReqDepositoSaqueConta"
+                },
+                "examples": {
+                  "ReqSaque": {
+                    "value": {
+                      "codCliente": 1,
+                      "valor": 500
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "401": {
+              "description": "Campos faltantes ou não foi possível realizar a operação"
+            },
+            "201": {
+              "description": "CREATED",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "$ref": "#/components/schemas/ResDepositoSaqueConta"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/conta/{id}": {
+        "get": {
+          "summary": "Busca o saldo do cliente",
+          "description": "Rota responsável por buscar o saldo do cliente",
+          "tags": ["Conta"],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "responses": {
+            "404": {
+              "description": "Cliente não encontrado"
+            },
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "$ref": "#/components/schemas/ResContaCliente"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "apis": ["./src/routers/index.js"]
+}
