@@ -33,7 +33,7 @@ const createWithdraw = async ({ codCliente, valor }) => {
   return clientUpdated;
 };
 
-const getByCodClient = async (codCliente) => {
+const getAccountByCodClient = async (codCliente) => {
   const validate = /^\d+$/g.test(codCliente);
 
   if (!validate) return false;
@@ -51,4 +51,4 @@ const getByCodClient = async (codCliente) => {
   };
 };
 
-module.exports = { createDeposit, createWithdraw, getByCodClient };
+module.exports = { createDeposit, createWithdraw, getAccountByCodClient };

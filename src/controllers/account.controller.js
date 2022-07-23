@@ -17,12 +17,12 @@ const createWithdraw = async (req, res) => {
   return res.status(StatusCodes.CREATED).json(withdraw);
 };
 
-const getByCodClient = async (req, res) => {
-  const client = await accountService.getByCodClient(req.params.id);
+const getAccountByCodClient = async (req, res) => {
+  const client = await accountService.getAccountByCodClient(req.params.id);
 
   if (!client) return res.status(StatusCodes.NOT_FOUND).json({ message: 'Cliente não encontrado' });
 
   return res.status(StatusCodes.OK).json(client);
 };
 
-module.exports = { createDeposit, createWithdraw, getByCodClient };
+module.exports = { createDeposit, createWithdraw, getAccountByCodClient };
