@@ -97,10 +97,14 @@ const validateAmountOfAsset = async (codCliente, codAtivo, qtdeAtivo) => {
   if (qtdeAtivo > assetsAmount) {
     return { error: { statusCode: StatusCodes.UNAUTHORIZED, message: 'Não foi possível realizar a operação' } };
   }
+
+  return false;
 };
 
 const sellAsset = async ({ codCliente, codAtivo, qtdeAtivo }) => {
-  await validateAmountOfAsset(codCliente, codAtivo, qtdeAtivo);
+  const validation = await validateAmountOfAsset(codCliente, codAtivo, qtdeAtivo);
+
+  if (validation.error) return validation.error;
 
   const asset = await getAssetPrice(codAtivo, qtdeAtivo);
 

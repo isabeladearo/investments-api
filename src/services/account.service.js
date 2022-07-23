@@ -1,5 +1,3 @@
-const { StatusCodes } = require('http-status-codes');
-
 const Sequelize = require('sequelize');
 const { Cliente } = require('../database/models');
 
