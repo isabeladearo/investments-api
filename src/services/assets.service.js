@@ -39,10 +39,8 @@ const getPriceAssetAverage = async (codCliente, codAtivo) => {
   return sumAssetPrice / count;
 };
 
-const getAssetsByCodCliente = async (codCliente) => {
-  const validate = /^\d+$/g.test(codCliente);
-
-  if (!validate) return false;
+const getAssetsByCodCliente = async (codCliente, authId) => {
+  if (codCliente !== authId.toString()) return false;
 
   const codAssets = await getAssetsByClient(codCliente);
 
@@ -62,15 +60,21 @@ const getAssetsByCodCliente = async (codCliente) => {
 };
 
 const getAssetByCodAtivo = async (codAtivo) => {
-  const validate = /^\d+$/g.test(codAtivo);
+  const validCodAtivo = /^\d+$/g.test(codAtivo);
 
-  if (!validate) return false;
+  if (!validCodAtivo) return false;
 
-  const { dataValues } = await Ativo.findOne({ where: { codAtivo } });
+  const inventoryAsset = await Ativo.findOne({ where: { codAtivo } });
+
+  if (!inventoryAsset) return false;
 
   const asset = await fetchAssetByCodAtivo(codAtivo);
 
-  return { codAtivo: Number(codAtivo), qtdeAtivo: dataValues.qtdeAtivo, valor: asset.cotacao };
+  return {
+    codAtivo: Number(codAtivo),
+    qtdeAtivo: inventoryAsset.dataValues.qtdeAtivo,
+    valor: asset.cotacao,
+  };
 };
 
 module.exports = { getAssetByCodAtivo, getAssetsByCodCliente };
