@@ -10,7 +10,7 @@ module.exports = async (req, res, next) => {
 
   if (!payload) return res.status(StatusCodes.UNAUTHORIZED).json({ message: 'Token expirado ou inválido' });
 
-  res.locals.auth = payload;
+  req.auth = payload.codCliente;
 
   return next();
 };

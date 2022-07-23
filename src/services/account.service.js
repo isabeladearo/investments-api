@@ -8,7 +8,9 @@ const findClient = (codCliente) => Cliente.findOne({
   attributes: { exclude: ['senha'] },
 });
 
-const createDeposit = async ({ codCliente, valor }) => {
+const createDeposit = async ({ codCliente, valor }, authId) => {
+  if (codCliente !== authId) return false;
+
   const client = await findClient(codCliente);
 
   if (!client) return false;
@@ -19,7 +21,9 @@ const createDeposit = async ({ codCliente, valor }) => {
   return clientUpdated;
 };
 
-const createWithdraw = async ({ codCliente, valor }) => {
+const createWithdraw = async ({ codCliente, valor }, authId) => {
+  if (codCliente !== authId) return false;
+
   const client = await Cliente.findOne({
     where: { codCliente, saldo: { [Op.gt]: valor } },
     attributes: { exclude: ['senha'] },
@@ -33,12 +37,10 @@ const createWithdraw = async ({ codCliente, valor }) => {
   return clientUpdated;
 };
 
-const getAccountByCodClient = async (codCliente) => {
-  const validate = /^\d+$/g.test(codCliente);
+const getAccountByCodClient = async (codCliente, authId) => {
+  if (codCliente !== authId.toString()) return false;
 
-  if (!validate) return false;
-
-  const client = await await Cliente.findOne({
+  const client = await Cliente.findOne({
     attributes: ['saldo'],
     where: { codCliente },
   });
