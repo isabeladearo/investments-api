@@ -17,6 +17,14 @@
       }
     ],
     "components": {
+      "securitySchemes": {
+        "bearerAuth": {
+          "type": "http",
+          "description": "JWT Authorization header using Bearer authentication",
+          "scheme": "bearer",
+          "bearerFormat": "JWT"
+        }
+      },
       "schemas": {
         "ReqCadastro": {
           "type": "object",
@@ -254,6 +262,11 @@
         "post": {
           "summary": "Realiza a compra de ativo",
           "description": "Rota responsável por realizar a compra de ativo",
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ],
           "tags": ["Investimentos"],
           "requestBody": {
             "required": true,
@@ -302,6 +315,11 @@
         "post": {
           "summary": "Realiza a venda de ativo",
           "description": "Rota responsável por realizar a venda de ativo",
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ],
           "tags": ["Investimentos"],
           "requestBody": {
             "required": true,
@@ -350,6 +368,11 @@
         "get": {
           "summary": "Busca o ativo pelo id",
           "description": "Rota responsável por buscar o ativo pelo id",
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ],
           "tags": ["Ativos"],
           "parameters": [
             {
@@ -381,6 +404,11 @@
         "get": {
           "summary": "Busca os ativos do cliente",
           "description": "Rota responsável por buscar os ativos do cliente",
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ],
           "tags": ["Ativos"],
           "parameters": [
             {
@@ -414,6 +442,11 @@
         "post": {
           "summary": "Realiza depósito na conta do cliente",
           "description": "Rota responsável por realizar depósito na conta do cliente",
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ],
           "tags": ["Conta"],
           "requestBody": {
             "required": true,
@@ -458,6 +491,11 @@
         "post": {
           "summary": "Realiza saque na conta do cliente",
           "description": "Rota responsável por realizar saque na conta do cliente",
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ],
           "tags": ["Conta"],
           "requestBody": {
             "required": true,
@@ -502,6 +540,11 @@
         "get": {
           "summary": "Busca o saldo do cliente",
           "description": "Rota responsável por buscar o saldo do cliente",
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ],
           "tags": ["Conta"],
           "parameters": [
             {
