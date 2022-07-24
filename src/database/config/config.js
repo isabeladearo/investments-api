@@ -1,7 +1,7 @@
 require('dotenv').config();
 
 const options = {
-  host: process.env.DB_HOSTNAME || process.env.DB_HOST || 'localhost',
+  host: process.env.DB_HOSTNAME,
   port: process.env.DB_PORT,
   database: process.env.DB_DATABASE,
   username: process.env.DB_USER,
