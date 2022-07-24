@@ -13,7 +13,6 @@ module.exports = async (req, res, next) => {
   if (!token) return res.status(StatusCodes.UNAUTHORIZED).json({ message: 'Token não encontrado' });
 
   const payload = await authenticateToken(token);
-  console.log(payload);
 
   if (!payload) return res.status(StatusCodes.UNAUTHORIZED).json({ message: 'Token expirado ou inválido' });
 
