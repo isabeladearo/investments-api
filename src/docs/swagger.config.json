@@ -265,9 +265,9 @@
                 "examples": {
                   "ReqComprarAtivo": {
                     "value": {
-                      "codCliente": 1,
-                      "codAtivo": 1,
-                      "qtdeAtivo": 10
+                      "codCliente": 3,
+                      "codAtivo": 3,
+                      "qtdeAtivo": 100
                     }
                   }
                 }
@@ -310,9 +310,9 @@
                 "examples": {
                   "ReqVenderAtivo": {
                     "value": {
-                      "codCliente": 1,
-                      "codAtivo": 1,
-                      "qtdeAtivo": 4
+                      "codCliente": 3,
+                      "codAtivo": 3,
+                      "qtdeAtivo": 10
                     }
                   }
                 }
