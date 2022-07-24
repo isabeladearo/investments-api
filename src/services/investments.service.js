@@ -15,7 +15,12 @@ const validateAssetAvailability = async (codAtivo, qtdeAtivo) => {
   });
 
   if (!assetAvailability) {
-    return { error: { statusCode: StatusCodes.UNAUTHORIZED, message: 'Ativo não disponível' } };
+    return {
+      error: {
+        statusCode: StatusCodes.UNAUTHORIZED,
+        message: 'Ativo não disponível',
+      },
+    };
   }
 
   return true;
@@ -40,14 +45,30 @@ const validateClientBalance = async (codCliente, codAtivo, qtdeAtivo) => {
   });
 
   if (!client) {
-    return { error: { statusCode: StatusCodes.UNAUTHORIZED, message: 'Não foi possível realizar a operação' } };
+    return {
+      error: {
+        statusCode: StatusCodes.UNAUTHORIZED,
+        message: 'Não foi possível realizar a operação',
+      },
+    };
   }
 
   return asset;
 };
 
-const buyAsset = async ({ codCliente, codAtivo, qtdeAtivo }) => {
-  await validateAssetAvailability(codAtivo, qtdeAtivo);
+const buyAsset = async ({ codCliente, codAtivo, qtdeAtivo }, authId) => {
+  if (codCliente !== authId) {
+    return {
+      error: {
+        statusCode: StatusCodes.UNAUTHORIZED,
+        message: 'Não foi possível realizar a operação',
+      },
+    };
+  }
+
+  const assetInventory = await validateAssetAvailability(codAtivo, qtdeAtivo);
+
+  if (assetInventory.error) return assetInventory;
 
   const asset = await validateClientBalance(codCliente, codAtivo, qtdeAtivo);
 
@@ -79,7 +100,12 @@ const buyAsset = async ({ codCliente, codAtivo, qtdeAtivo }) => {
 
     return response;
   } catch (error) {
-    return { error: { statusCode: StatusCodes.INTERNAL_SERVER_ERROR, message: 'Não foi possível realizar a operação' } };
+    return {
+      error: {
+        statusCode: StatusCodes.INTERNAL_SERVER_ERROR,
+        message: 'Não foi possível realizar a operação',
+      },
+    };
   }
 };
 
@@ -95,18 +121,45 @@ const validateAmountOfAsset = async (codCliente, codAtivo, qtdeAtivo) => {
   const assetsAmount = purchasedAssets - soldAssets;
 
   if (qtdeAtivo > assetsAmount) {
-    return { error: { statusCode: StatusCodes.UNAUTHORIZED, message: 'Não foi possível realizar a operação' } };
+    return {
+      error: {
+        statusCode: StatusCodes.UNAUTHORIZED,
+        message: 'Não foi possível realizar a operação',
+      },
+    };
   }
 
-  return false;
+  return true;
 };
 
-const sellAsset = async ({ codCliente, codAtivo, qtdeAtivo }) => {
-  const validation = await validateAmountOfAsset(codCliente, codAtivo, qtdeAtivo);
+const sellAsset = async ({ codCliente, codAtivo, qtdeAtivo }, authId) => {
+  if (codCliente !== authId) {
+    return {
+      error: {
+        statusCode: StatusCodes.UNAUTHORIZED,
+        message: 'Não foi possível realizar a operação',
+      },
+    };
+  }
 
-  if (validation.error) return validation.error;
+  const validation = await validateAmountOfAsset(
+    codCliente,
+    codAtivo,
+    qtdeAtivo,
+  );
+
+  if (validation.error) return validation;
 
   const asset = await getAssetPrice(codAtivo, qtdeAtivo);
+
+  if (!asset) {
+    return {
+      error: {
+        statusCode: StatusCodes.UNAUTHORIZED,
+        message: 'Não foi possível realizar a operação',
+      },
+    };
+  }
 
   try {
     const response = await sequelize.transaction(async (t) => {
@@ -136,7 +189,12 @@ const sellAsset = async ({ codCliente, codAtivo, qtdeAtivo }) => {
 
     return response;
   } catch (error) {
-    return { error: { statusCode: StatusCodes.INTERNAL_SERVER_ERROR, message: 'Não foi possível realizar a operação' } };
+    return {
+      error: {
+        statusCode: StatusCodes.INTERNAL_SERVER_ERROR,
+        message: 'Não foi possível realizar a operação',
+      },
+    };
   }
 };
 
