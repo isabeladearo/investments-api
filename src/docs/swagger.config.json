@@ -275,8 +275,11 @@
             }
           },
           "responses": {
+            "400": {
+              "description": "Campos faltantes"
+            },
             "401": {
-              "description": "Campos faltantes ou não foi possível realizar a operação "
+              "description": "Email ou senha inválida"
             },
             "500": {
               "description": "Não foi possível realizar a operação"
@@ -320,8 +323,11 @@
             }
           },
           "responses": {
+            "400": {
+              "description": "Campos faltantes"
+            },
             "401": {
-              "description": "Campos faltantes ou não foi possível realizar a operação"
+              "description": "Não foi possível realizar a operação"
             },
             "500": {
               "description": "Não foi possível realizar a operação"
@@ -428,6 +434,9 @@
             }
           },
           "responses": {
+            "400": {
+              "description": "Campos faltantes"
+            },
             "401": {
               "description": "Campos faltantes ou não foi possível realizar a operação"
             },
@@ -469,8 +478,11 @@
             }
           },
           "responses": {
+            "400": {
+              "description": "Campos faltantes"
+            },
             "401": {
-              "description": "Campos faltantes ou não foi possível realizar a operação"
+              "description": "Não foi possível realizar a operação"
             },
             "202": {
               "description": "ACCEPTED",
