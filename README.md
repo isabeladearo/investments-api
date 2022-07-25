@@ -73,6 +73,11 @@ Dessa forma será possível simular todas as rotas e entender os retornos sem ne
   - Sequelize
   - Swagger
   
-  
+##
+
+### Melhorias da investments-api
+- Elaborar os testes
+- Fazer deploy
+- Deixar a api que retorna a cotação de ativos dinâmica, para atualizar a cada minuto
   
   
