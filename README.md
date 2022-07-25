@@ -1,7 +1,13 @@
 ## Investimentos API
 
 Essa aplicação foi desenvolvida durante o desafio prático do processo seletivo da empresa XPInc. <br><br>
-A proposta foi desenvolver uma aplicação de investimentos em ações que promove a interação de compra e venda de ativos entre cliente e corretora.<br>
+A proposta foi desenvolver uma aplicação de investimento em ações que promove a interação de compra e venda de ativos entre cliente e corretora.<br>
+
+Para acessar a aplicação, siga as instruções do 'Rodando com Docker'.
+
+
+👉🏻 ⚠️ **Também, nessa aplicação, foi criada uma API externa que retorna a cotação dos ativos e que pode ser acessada através do link: [assets-api](https://github.com/isabeladearo/assets-api).**
+
 
 ##
 
@@ -23,13 +29,13 @@ A proposta foi desenvolver uma aplicação de investimentos em ações que promo
   ```
   4. Rode o container via CLI:
   * Utilize o comando `docker exec -it investments_api bash`
-  5. Crie a tabela no banco de dados:
+  5. Crie a tabelas no banco de dados:
   * `npm run prestart`
   6. Popule o banco de dados:
   * `npm run seed`
   7. Rode a aplicação:
   * `npm run start`
-  8. A aplicação poderá ser acessada através de, no seu navegador:
+  8. A aplicação poderá ser acessada através do seu navegador:
   * `http://localhost:3000/docs/`
 
 </details>
